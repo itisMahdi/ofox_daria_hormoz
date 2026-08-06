@@ -1,0 +1,37 @@
+# Android fstab file.
+# The filesystem that contains the filesystem checker binary (typically /system) cannot
+# specify MF_CHECK, and must come before any filesystems that do specify MF_CHECK
+
+#<src>				<mnt_point>		<type>		<mnt_flags and options>				<fs_mgr_flags>
+# Logical partitions
+system				/system			erofs		ro						wait,slotselect,logical,first_stage_mount
+system				/system			ext4		ro,barrier=1,discard				wait,slotselect,logical,first_stage_mount
+system_ext			/system_ext		erofs		ro						wait,slotselect,logical,first_stage_mount
+system_ext			/system_ext		ext4		ro,barrier=1,discard				wait,slotselect,logical,first_stage_mount
+system_dlkm			/system_dlkm		erofs		ro						wait,slotselect,logical,first_stage_mount,nofail
+system_dlkm			/system_dlkm		ext4		ro,barrier=1,discard				wait,slotselect,logical,first_stage_mount,nofail
+vendor				/vendor			erofs		ro						wait,slotselect,logical,first_stage_mount
+vendor				/vendor			ext4		ro,barrier=1,discard				wait,slotselect,logical,first_stage_mount
+product				/product		erofs		ro						wait,slotselect,logical,first_stage_mount
+product				/product		ext4		ro,barrier=1,discard				wait,slotselect,logical,first_stage_mount
+vendor_dlkm			/vendor_dlkm		erofs		ro						wait,slotselect,logical,first_stage_mount
+vendor_dlkm			/vendor_dlkm		ext4		ro,barrier=1,discard				wait,slotselect,logical,first_stage_mount
+odm_dlkm			/odm_dlkm		erofs		ro						wait,slotselect,logical,first_stage_mount
+odm_dlkm			/odm_dlkm		ext4		ro,barrier=1,discard				wait,slotselect,logical,first_stage_mount
+
+# Userdata / metadata (no FBE decrypt handling - flash-only recovery)
+# NOTE: /metadata is f2fs on this device per the stock fstab.mt6897.
+#       The previous tree declared it ext4, which made it fail to mount.
+/dev/block/by-name/metadata	/metadata		f2fs		noatime,nosuid,nodev,discard			wait,check,formattable
+/dev/block/by-name/userdata	/data			f2fs		noatime,nosuid,nodev,discard			wait,check,formattable
+
+# Need to have this entry in here even though the mount point itself is no longer needed.
+# The update_engine code looks for this entry in order to determine the boot device address
+# and fails if it does not find it.
+/dev/block/by-name/misc		/misc			emmc		defaults					defaults
+
+# tranfs is used as /cache on this device
+/dev/block/by-name/tranfs	/cache			ext4		noatime,nosuid,nodev,discard			wait,check,formattable
+
+# External SD card
+/dev/block/mmcblk1p1		/external_sd		vfat		defaults					defaults
