@@ -46,7 +46,6 @@ Current build status: **Stable**
 **Not working**
 - [ ] Decryption (crypto is disabled in this tree by design)
 - [ ] Vibrator (no vendor vibrator HAL shipped yet)
-- [ ] ADB works fine but logcat Not 
 ---
 
 ## Building
