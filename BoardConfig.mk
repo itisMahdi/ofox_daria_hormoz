@@ -240,8 +240,10 @@ TW_EXCLUDE_APEX := true
 
 # Debug-tools
 TWRP_INCLUDE_LOGCAT := true
-TWRP_EVENT_LOGGING := true
 TARGET_USES_LOGD := true
+OF_DONT_KEEP_LOG_HISTORY := 1
+OF_LOOP_DEVICE_ERRORS_TO_LOG := 1
+
 
 # Crypto - kept DISABLED (flash-only recovery, no /data decrypt) as in the
 # previous Daria tree. To attempt FBE decryption, flip these on:

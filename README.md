@@ -27,7 +27,7 @@
 
 ## Status
 
-Current build status: **Early Development**
+Current build status: **Stable**
 
 **Working**
 - [x] Touchscreen
@@ -40,13 +40,13 @@ Current build status: **Early Development**
 - [x] Backup / restore
 - [x] Fastbootd
 - [x] Battery information
+- [x] MTP
+- [x] USB OTG
 
 **Not working**
 - [ ] Decryption (crypto is disabled in this tree by design)
-- [ ] MTP
-- [ ] USB OTG
 - [ ] Vibrator (no vendor vibrator HAL shipped yet)
-
+- [ ] ADB works fine but logcat Not 
 ---
 
 ## Building

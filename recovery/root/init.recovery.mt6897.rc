@@ -1,8 +1,6 @@
 import /init.tee.rc
 import /init.recovery.usb.rc
-import /init.recovery.hormoz-services.rc
-import /hwservicemanager.rc
-# import /init.recovery.service.rc   <- file does not exist in this tree (init parse error)
+
 
 on init
     setprop sys.usb.configfs 1

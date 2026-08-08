@@ -1,100 +1,60 @@
 # Android fstab file.
 # The filesystem that contains the filesystem checker binary (typically /system) cannot
 # specify MF_CHECK, and must come before any filesystems that do specify MF_CHECK
-#
-# Partition names verified against recovery/root/first_stage_ramdisk/fstab.mt6897
-# (the stock vendor fstab for hormoz). Do not add partitions that are not listed there.
 
-#<mnt_point>            <type>      <device>                                    <flags>
-
-# Data / metadata / cache
-/metadata               f2fs        /dev/block/by-name/metadata                 flags=display="Metadata [ metadata ]";backup=1
-/data                   f2fs        /dev/block/by-name/userdata                 flags=display="Userdata [ data ]"
-/cache                  ext4        /dev/block/by-name/tranfs                   flags=display="Cache [ tranfs ]";wipeingui;wipeduringfactoryreset
-
-# Super
-/super                  emmc        /dev/block/by-name/super                    flags=display="Super Image [ super ]";backup=1;flashimg=1
+#<mnt_point>        <type>    <device>                            <device2>                         <mnt_flags and options>
+/metadata           ext4      /dev/block/by-name/metadata                                           flags=display="metadata";backup=1
+/data               f2fs      /dev/block/by-name/userdata                                           flags=fileencryption=aes-256-xts:aes-256-cts:v2+inlinecrypt_optimized,keydirectory=/metadata/vold/metadata_encryption
+/cache              ext4      /dev/block/by-name/rescue                                             flags=display="cache";wipeingui;wipeduringfactoryreset
 
 # Boot
-/boot                   emmc        /dev/block/by-name/boot                     flags=display="Boot Image [ boot ]";slotselect;backup=1;flashimg=1
-/init_boot              emmc        /dev/block/by-name/init_boot                flags=display="Init Boot Image [ init_boot ]";slotselect;backup=1;flashimg=1
-/vendor_boot            emmc        /dev/block/by-name/vendor_boot              flags=display="Vendor Boot Image [ vendor_boot ]";slotselect;backup=1;flashimg=1
-/dtbo                   emmc        /dev/block/by-name/dtbo                     flags=display="Device Tree Blob Overlay [ dtbo ]";slotselect;backup=1;flashimg=1
-/odmdtbo                emmc        /dev/block/by-name/odmdtbo                  flags=display="ODM Device Tree Overlay [ odmdtbo ]";backup=1;flashimg=1
-/vbmeta                 emmc        /dev/block/by-name/vbmeta                   flags=display="Verified Boot Metadata [ vbmeta ]";slotselect;backup=1;flashimg=1
-/vbmeta_system          emmc        /dev/block/by-name/vbmeta_system            flags=display="System Verified Boot [ vbmeta_system ]";slotselect;backup=1;flashimg=1
-/vbmeta_vendor          emmc        /dev/block/by-name/vbmeta_vendor            flags=display="Vendor Verified Boot [ vbmeta_vendor ]";slotselect;backup=1;flashimg=1
+/boot               emmc      /dev/block/by-name/boot                                               flags=display="boot";slotselect;backup=1;flashimg=1
+/vendor_boot        emmc      /dev/block/by-name/vendor_boot                                        flags=display="vendor_boot";slotselect;backup=1;flashimg=1
+/dtbo               emmc      /dev/block/by-name/dtbo                                               flags=display="dtbo";slotselect;backup=1;flashimg=1
+/vbmeta             emmc      /dev/block/by-name/vbmeta                                             flags=display="vbmeta";slotselect;backup=1;flashimg=1
+/vbmeta_system      emmc      /dev/block/by-name/vbmeta_system                                      flags=display="vbmeta_system";slotselect;backup=1;flashimg=1
+/vbmeta_vendor      emmc      /dev/block/by-name/vbmeta_vendor                                      flags=display="vbmeta_vendor";slotselect;backup=1;flashimg=1
+/logo               emmc      /dev/block/by-name/logo                                               flags=display="logo";backup=1
+/misc               emmc      /dev/block/by-name/misc                                               flags=display="misc";backup=1
 
-# Bootloader
-/lk1                    emmc        /dev/block/by-name/lk1                      flags=display="Little Kernel Bootloader [ lk1 ]";backup=1;flashimg=1
-/bootloader2            emmc        /dev/block/by-name/bootloader2              flags=display="Bootloader Backup [ bootloader2 ]";backup=1;flashimg=1
-/logo                   emmc        /dev/block/by-name/logo                     flags=display="Splashscreen Bootlogo [ logo ]";slotselect;backup=1;flashimg=1
+# Persistent Firmware & Properties
+/persist            ext4      /dev/block/by-name/persist                                            flags=display="persist"
+/persist_image      emmc      /dev/block/by-name/persist                                            flags=display="persist";backup=1;flashimg=1
 
-# Persistent firmware & properties
-/persist                ext4        /dev/block/by-name/persist                  flags=display="Persistent [ persist ]"
-/persist_image          emmc        /dev/block/by-name/persist                  flags=display="Persistent [ persist ]";backup=1;flashimg=1
-
-# IMEI, Bluetooth, MAC address, serial number etc.
-/protect_f              ext4        /dev/block/by-name/protect1                 flags=display="Protect_F [ protect1 ]"
-/protect_s              ext4        /dev/block/by-name/protect2                 flags=display="Protect_S [ protect2 ]"
-/nvdata                 ext4        /dev/block/by-name/nvdata                   flags=display="Non-Volatile Data [ nvdata ]"
-/nvcfg                  ext4        /dev/block/by-name/nvcfg                    flags=display="Non-Volatile Config [ nvcfg ]"
-/protect_f_image        emmc        /dev/block/by-name/protect1                 flags=display="Protect_F [ protect1 ]";backup=1;flashimg=1
-/protect_s_image        emmc        /dev/block/by-name/protect2                 flags=display="Protect_S [ protect2 ]";backup=1;flashimg=1
-/nvdata_image           emmc        /dev/block/by-name/nvdata                   flags=display="Non-Volatile Data [ nvdata ]";backup=1;flashimg=1
-/nvcfg_image            emmc        /dev/block/by-name/nvcfg                    flags=display="Non-Volatile Config [ nvcfg ]";backup=1;flashimg=1
-/nvram                  emmc        /dev/block/by-name/nvram                    flags=display="Non-Volatile RAM [ nvram ]";backup=1;flashimg=1
-/proinfo                emmc        /dev/block/by-name/proinfo                  flags=display="ProInfo [ proinfo ]";backup=1;flashimg=1
-/persistent             emmc        /dev/block/by-name/frp                      flags=display="Factory Reset Protection [ frp ]";backup=1;flashimg=1
-/misc                   emmc        /dev/block/by-name/misc                     flags=display="Miscellaneous [ misc ]";backup=1;flashimg=1
-/para                   emmc        /dev/block/by-name/para                     flags=display="Boot Control [ para ]";backup=1;flashimg=1
-/boot_para              emmc        /dev/block/by-name/boot_para                flags=display="Boot Parameters [ boot_para ]";backup=1;flashimg=1
-/expdb                  emmc        /dev/block/by-name/expdb                    flags=display="Exception Database [ expdb ]"
-/seccfg                 emmc        /dev/block/by-name/seccfg                   flags=display="Security Config [ seccfg ]"
-/otp                    emmc        /dev/block/by-name/otp                      flags=display="One Time Programmable [ otp ]"
-
-# Modem
-/modem                  emmc        /dev/block/by-name/modem                    flags=display="Modem Baseband [ modem ]";backup=1;flashimg=1
-/md1dsp                 emmc        /dev/block/by-name/md1dsp                   flags=display="Modem DSP [ md1dsp ]";backup=1;flashimg=1
-/md1arm7                emmc        /dev/block/by-name/md1arm7                  flags=display="Modem ARM7 [ md1arm7 ]";backup=1;flashimg=1
-/md3img                 emmc        /dev/block/by-name/md3img                   flags=display="Modem 3 Image [ md3img ]";backup=1;flashimg=1
-/mcf_ota                emmc        /dev/block/by-name/mcf_ota                  flags=display="Modem Configuration [ mcf_ota ]";backup=1;flashimg=1
-/connsys_wifi           emmc        /dev/block/by-name/connsys_wifi             flags=display="CONNSYS WiFi [ connsys_wifi ]";backup=1;flashimg=1
-/connsys_bt             emmc        /dev/block/by-name/connsys_bt               flags=display="CONNSYS Bluetooth [ connsys_bt ]";backup=1;flashimg=1
-
-# Firmware (this SoC uses paired 1/2 copies, NOT A/B slot suffixes)
-/tee1                   emmc        /dev/block/by-name/tee1                     flags=display="Trusted Execution Environment [ tee1 ]";backup=1;flashimg=1
-/tee2                   emmc        /dev/block/by-name/tee2                     flags=display="Trusted Execution Environment [ tee2 ]";backup=1;flashimg=1
-/gz1                    emmc        /dev/block/by-name/gz1                      flags=display="MediaTek GenieZone [ gz1 ]";backup=1;flashimg=1
-/gz2                    emmc        /dev/block/by-name/gz2                      flags=display="MediaTek GenieZone [ gz2 ]";backup=1;flashimg=1
-/scp1                   emmc        /dev/block/by-name/scp1                     flags=display="System Companion Processor [ scp1 ]";backup=1;flashimg=1
-/scp2                   emmc        /dev/block/by-name/scp2                     flags=display="System Companion Processor [ scp2 ]";backup=1;flashimg=1
-/sspm1                  emmc        /dev/block/by-name/sspm1                    flags=display="Secure System Power Manager [ sspm1 ]";backup=1;flashimg=1
-/sspm2                  emmc        /dev/block/by-name/sspm2                    flags=display="Secure System Power Manager [ sspm2 ]";backup=1;flashimg=1
-/dpm1                   emmc        /dev/block/by-name/dpm1                     flags=display="DRAM Power Management [ dpm1 ]";backup=1;flashimg=1
-/dpm2                   emmc        /dev/block/by-name/dpm2                     flags=display="DRAM Power Management [ dpm2 ]";backup=1;flashimg=1
-/mcupm1                 emmc        /dev/block/by-name/mcupm1                   flags=display="MCU Power Management [ mcupm1 ]";backup=1;flashimg=1
-/mcupm2                 emmc        /dev/block/by-name/mcupm2                   flags=display="MCU Power Management [ mcupm2 ]";backup=1;flashimg=1
-/mvpu_algo1             emmc        /dev/block/by-name/mvpu_algo1               flags=display="Vision Processing Unit [ mvpu_algo1 ]";backup=1;flashimg=1
-/mvpu_algo2             emmc        /dev/block/by-name/mvpu_algo2               flags=display="Vision Processing Unit [ mvpu_algo2 ]";backup=1;flashimg=1
-/apusys1                emmc        /dev/block/by-name/apusys1                  flags=display="AI Processing Unit [ apusys1 ]";backup=1;flashimg=1
-/apusys2                emmc        /dev/block/by-name/apusys2                  flags=display="AI Processing Unit [ apusys2 ]";backup=1;flashimg=1
-/ccu                    emmc        /dev/block/by-name/ccu                      flags=display="Camera Control Unit [ ccu ]";backup=1;flashimg=1
-/vcp                    emmc        /dev/block/by-name/vcp                      flags=display="Video Companion Processor [ vcp ]";backup=1;flashimg=1
-/gpueb                  emmc        /dev/block/by-name/gpueb                    flags=display="GPU Extension Driver [ gpueb ]";backup=1;flashimg=1
-/spmfw                  emmc        /dev/block/by-name/spmfw                    flags=display="System Power Manager Firmware [ spmfw ]";backup=1;flashimg=1
-/audio_dsp              emmc        /dev/block/by-name/audio_dsp                flags=display="Audio DSP Driver [ audio_dsp ]";backup=1;flashimg=1
-/pi_img                 emmc        /dev/block/by-name/pi_img                   flags=display="PICACHU [ pi_img ]";backup=1;flashimg=1
-
-# Flashable logical partitions
-/system_image           emmc        /dev/block/by-name/system                   flags=display="System Image";backup=1;flashimg=1
-/vendor_image           emmc        /dev/block/by-name/vendor                   flags=display="Vendor Image";backup=1;flashimg=1
-/system_ext_image       emmc        /dev/block/by-name/system_ext               flags=display="System_EXT Image";backup=1;flashimg=1
-/product_image          emmc        /dev/block/by-name/product                  flags=display="Product Image";backup=1;flashimg=1
-/vendor_dlkm_image      emmc        /dev/block/by-name/vendor_dlkm              flags=display="VendorDLKM Image";backup=1;flashimg=1
-/odm_dlkm_image         emmc        /dev/block/by-name/odm_dlkm                 flags=display="ODMDLKM Image";backup=1;flashimg=1
-/system_dlkm_image      emmc        /dev/block/by-name/system_dlkm              flags=display="SystemDLKM Image";backup=1;flashimg=1
+# Firmware partitions
+/para               emmc      /dev/block/by-name/para                                               flags=display="para"
+/protect_f          ext4      /dev/block/by-name/protect1                                           flags=display="protect_f"
+/protect_s          ext4      /dev/block/by-name/protect2                                           flags=display="protect_s"
+/nvdata             ext4      /dev/block/by-name/nvdata                                             flags=display="nvdata"
+/nvcfg              ext4      /dev/block/by-name/nvcfg                                              flags=display="nvcfg"
+/boot_para          emmc      /dev/block/by-name/boot_para                                          flags=display="boot_para"
+/audio_dsp          emmc      /dev/block/by-name/audio_dsp                                          flags=display="audio_dsp"
+/otp                emmc      /dev/block/by-name/otp                                                flags=display="otp"
+/persistent         emmc      /dev/block/by-name/frp                                                flags=display="persistent"
+/nvram              emmc      /dev/block/by-name/nvram                                              flags=display="nvram"
+/proinfo            emmc      /dev/block/by-name/proinfo                                            flags=display="proinfo"
+/bootloader         emmc      /dev/block/by-name/lk                                                 flags=display="bootloader"
+/bootloader2        emmc      /dev/block/by-name/lk2                                                flags=display="bootloader2"
+/gz1                emmc      /dev/block/by-name/gz1                                                flags=display="gz1"
+/gz2                emmc      /dev/block/by-name/gz2                                                flags=display="gz2"
+/expdb              emmc      /dev/block/by-name/expdb                                              flags=display="expdb"
+/seccfg             emmc      /dev/block/by-name/seccfg                                             flags=display="seccfg"
+/tee1               emmc      /dev/block/by-name/tee1                                               flags=display="tee1"
+/tee2               emmc      /dev/block/by-name/tee2                                               flags=display="tee2"
+/mcupm_1            emmc      /dev/block/by-name/mcupm_1                                            flags=display="mcupm_1"
+/mcupm_2            emmc      /dev/block/by-name/mcupm_2                                            flags=display="mcupm_2"
+/scp1               emmc      /dev/block/by-name/scp1                                               flags=display="scp1"
+/scp2               emmc      /dev/block/by-name/scp2                                               flags=display="scp2"
+/sspm_1             emmc      /dev/block/by-name/sspm_1                                             flags=display="sspm_1"
+/sspm_2             emmc      /dev/block/by-name/sspm_2                                             flags=display="sspm_1"
+/dpm_1              emmc      /dev/block/by-name/dpm_1                                              flags=display="dpm_1"
+/dpm_2              emmc      /dev/block/by-name/dpm_2                                              flags=display="dpm_2"
+/md1img             emmc      /dev/block/by-name/md1img                                             flags=display="md1img"
+/md1dsp             emmc      /dev/block/by-name/md1dsp                                             flags=display="md1dsp"
+/md1arm7            emmc      /dev/block/by-name/md1arm7                                            flags=display="md1arm7"
+/md3img             emmc      /dev/block/by-name/md3img                                             flags=display="md3img"
+/spmfw              emmc      /dev/block/by-name/spmfw                                              flags=display="spmfw"
+/pi_img             emmc      /dev/block/by-name/pi_img                                             flags=display="pi_img"
 
 # Removable storage
-/external_sd            auto        /dev/block/mmcblk1p1                        /dev/block/mmcblk0p1    flags=display="Micro SD Card";storage;wipeingui;removable;backup=0;fsflags=utf8
-/usb_otg                auto        /dev/block/sda1                             /dev/block/sda          flags=display="USB-OTG";storage;wipeingui;removable;backup=0;fsflags=utf8
+/usb_otg            auto      /dev/block/sdd1                                                       flags=display="usb-otg";storage;wipeingui;removable;fsflags=utf8
